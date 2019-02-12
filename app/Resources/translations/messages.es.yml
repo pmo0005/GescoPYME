@@ -1,0 +1,16 @@
+custom_easy_admin:
+  action:
+    new: Creat nuevo
+    search: Buscar
+    edit: Editar
+    delete: Borrar
+  menu:
+    user: Usuario
+    company: Empresa
+    product: Producto
+  users:
+    username: Usuario
+    email: Email
+    enabled: Activo
+    last_login: Último Login
+    company_name: Empresa

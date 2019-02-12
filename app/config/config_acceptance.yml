@@ -1,0 +1,22 @@
+imports:
+    - { resource: config_test.yml }
+
+framework:
+    profiler:
+        only_exceptions: false
+        collect: true
+
+web_profiler:
+    toolbar: true
+
+csa_guzzle:
+    profiler: "%kernel.debug%"
+    logger: true
+    clients:
+        local_test_api:
+            config:
+                base_uri: "https://gescopyme.dev/app_acceptance.php/"
+                verify: false
+
+parameters:
+    database_name: "db_acceptance"

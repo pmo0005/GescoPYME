@@ -1,0 +1,16 @@
+login:
+  name: Gescopyme Login
+  form:
+    username_required: El usuario es obligatorio
+    password_required: La contraseña es obligatoria
+    user: Usuario o Email
+    password: Contraseña
+    enter: ENTRAR
+    remember: Recuérdame
+    error:
+      g: Ha ocurrido un error, por favor vuelve a probar pasados unos minutos.
+      d: El usuario no está activo. Comprueba tu emial para activar tu cuenta.
+      l: Error de acceso, usuario bloqueado.
+      e: La cuenta ha epirado.
+      bc: Usuario y/o contraseña incorrecta.
+

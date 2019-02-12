@@ -1,0 +1,19 @@
+login:
+    type: rest
+    resource: AppBundle\Controller\RestLoginController
+
+password_management:
+    type: rest
+    resource: AppBundle\Controller\RestPasswordManagementController
+
+profile:
+    type: rest
+    resource: AppBundle\Controller\RestProfileController
+
+company:
+    type: rest
+    resource: AppBundle\Controller\RestCompanyController
+
+registration:
+    type: rest
+    resource: AppBundle\Controller\RestRegistrationController

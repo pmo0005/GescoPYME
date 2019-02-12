@@ -1,0 +1,73 @@
+#fos_user_rest:
+#    type: rest
+#    resource: AppBundle\Controller\FosUserRestController
+
+routing_rest:
+    prefix: /api
+    resource: routing_rest.yml
+
+general_logout:
+    path: /{_locale}/logout
+    requirements:
+        _locale: en|es
+
+general_login:
+    path: /{_locale}/login
+    defaults: {_controller: AppBundle:AdminLogin:index}
+    requirements:
+        _locale: en|es
+
+general_login_check:
+    path: /{_locale}/login/check
+
+landing_locale:
+    path: /{_locale}
+    controller: FrameworkBundle:Redirect:redirect
+    defaults:
+        route: easyadmin
+
+easy_admin_bundle_superadmin:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /{_locale}/admin
+    requirements:
+        _locale: en|es
+
+easy_admin_bundle_company:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /{_locale}/company/admin
+    requirements:
+        _locale: en|es
+
+landing:
+    path: /
+    controller: FrameworkBundle:Redirect:redirect
+    defaults:
+        route: easyadmin
+        _locale: en
+
+ajax_company_actions:
+    path:     /{_locale}/get-company-actions
+    defaults:
+        _controller: AppBundle:Knowledge:listActionsOfCompany
+        _locale: en
+    methods:  GET
+    requirements:
+        _locale: en|es
+
+ajax_company_knowledges:
+    path:     /{_locale}/get-company-knowledges
+    defaults:
+        _controller: AppBundle:Product:listKnowledgesOfCompany
+        _locale: en
+    methods:  GET
+    requirements:
+        _locale: en|es
+
+# Temporary disabling this
+#api_login_check:
+#    path: /api/login_check
+
+#fos_user:
+#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

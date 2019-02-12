@@ -1,0 +1,16 @@
+login:
+  name: Gescopyme Login Form
+  form:
+    username_required: Username required
+    password_required: Password required
+    user: Username or Email
+    password: Password
+    enter: LOGIN
+    remember: Remember me
+    error:
+      g: An error has occurred, please try again later.
+      d: The user is not active. Check your email to activate your account.
+      l: Access error, User blocked.
+      e: This user account has expired.
+      bc: Incorrect email and/or password
+

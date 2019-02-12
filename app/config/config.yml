@@ -1,0 +1,276 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        cookie_lifetime: 3600
+        cookie_httponly: true
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+
+
+
+# FOS User
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: api
+    user_class: AppBundle\Entity\User
+    from_email:
+        address:        support@mywebsite.com
+        sender_name:    mr_mailer
+    service:
+        mailer: user.mailer.rest
+
+
+# Nelmio CORS
+nelmio_cors:
+    defaults:
+        allow_origin:  ["%cors_allow_origin%"]
+        allow_methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"]
+        allow_headers: ["Content-Type", "Authorization"]
+        max_age:       3600
+    paths:
+        '^/': ~
+
+
+# Nelmio API Doc
+nelmio_api_doc: ~
+
+
+# FOS REST Bundle
+fos_rest:
+    body_listener: true
+    param_fetcher_listener: force
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+            xml: false
+            rss: false
+        mime_types:
+            json: ['application/json', 'application/x-json']
+            jpg: ['image/jpeg']
+            png: ['image/png']
+    routing_loader:
+        default_format:  json
+        include_format:  false
+    format_listener:
+        enabled: true
+        rules:
+            - { path: ^/api, priorities: [ json ], fallback_format: json, prefer_extension: true }
+            - { path: ^/, priorities: ['html', '*/*'], fallback_format: html, prefer_extension: true }
+
+    exception:
+        enabled: true
+#    versioning:
+#        enabled: true
+#        default_version: v1
+
+
+#JMS Serializer
+jms_serializer: ~
+
+
+# Lexik JWT Bundle
+lexik_jwt_authentication:
+    private_key_path: "%jwt_private_key_path%"
+    public_key_path:  "%jwt_public_key_path%"
+    pass_phrase:      "%jwt_key_pass_phrase%"
+    token_ttl:        "%jwt_token_ttl%"
+
+easy_admin:
+    site_name: 'Gescopyme Admin Panel'
+    design:
+        brand_color: '#827ffe'
+        templates:
+            new: '@AppBundle/Admin/form.html.twig'
+            #new: AppBundle\Resources\views\superadmin/knowledge/form.html.twig
+            #new: '@AppBundle\superadmin\knowledge\form.html.twig'
+        menu:
+            - { label: 'General' }
+            - ProductType
+            - KnowledgeType
+            - ActionType
+            - KnowledgeGeneralLevel
+            - { label: 'Cómo hacemos' }
+            - User
+            - Company
+            - Product
+            - Knowledge
+            - Action
+    entities:
+        User:
+            label: "Usuarios"
+            class: AppBundle\Entity\User
+            list:
+                title: "Usuarios"
+                fields:
+                    - id
+                    - { property: 'username', label: 'Nombre de usuario' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'enabled', label: 'Estado' }
+                    - { property: 'lastLogin', label: 'Último login' }
+                    - { property: 'company.name', label: 'Compañía' }
+            edit:
+                fields:
+                    - { property: 'username', label: 'Nombre de usuario' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'password', label: 'Contraseña' }
+                    - { property: 'plainPassword', type: 'text', label: 'Repite contraseña', type_options: { required: false } }
+                    - { property: 'company', label: 'Compañía', type_options: { required: true }}
+                form_options: { validation_groups: ['Profile'] }
+            new:
+                fields:
+                    - { property: 'username', label: 'Nombre de usuario' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'password', label: 'Contraseña' }
+                    - { property: 'plainPassword', type: 'text', label: 'Repite contraseña', type_options: { required: true } }
+                    - { property: 'company', label: 'Compañía', type_options: { required: true } }
+                form_options: { validation_groups: ['Registration'] }
+        Company:
+            label: "Empresas"
+            class: AppBundle\Entity\Company
+            form:
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'socialDenomination', label: 'Denominación social' }
+                    - { property: 'description', label: 'Descripción' }
+                    - { property: 'cif', label: 'CIF' }
+                    - { property: 'cnae', label: 'CNAE' }
+                    - { property: 'address', label: 'Dirección' }
+                    - { property: 'zipCode', label: 'Código postal' }
+                    - { property: 'province', label: 'Provincia' }
+                    - { property: 'city', label: 'Ciudad' }
+                    - { property: 'country', label: 'País' }
+                    #- { property: 'contactPerson', label: 'Persona de contacto' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'phone', label: 'Teléfono' }
+                    - { property: 'web', label: 'Página web' }
+                    - { property: 'observations', label: 'Observaciones' }
+        KnowledgeType:
+            label: "Tipos de conocimientos"
+            class: AppBundle\Entity\KnowledgeType
+        KnowledgeGeneralLevel:
+            label: "Niveles de conocimiento"
+            class: AppBundle\Entity\KnowledgeGeneralLevel
+        ProductType:
+            label: "Tipos de Productos"
+            class: AppBundle\Entity\ProductType
+        ActionType:
+            label: "Tipos de Acciones"
+            class: AppBundle\Entity\ActionType
+        Knowledge:
+            label: "Conocimiento"
+            class: AppBundle\Entity\Knowledge
+            controller: AppBundle\Controller\KnowledgeController
+            form:
+                fields:
+                - { property: 'name', label: 'Nombre' }
+                - { property: 'description', label: 'Descripción' }
+                - { property: 'type', label: 'Tipo de conocimiento' }
+                - { property: 'company', label: 'Empresa' }
+                # - { property: 'products', label: 'Producto' }
+                - { property: 'totalUsers', label: 'Usuarios totales' }
+                - { property: 'currentLevel', label: 'Nivel de conocimiento actual' }
+                - { property: 'desiredLevel', label: 'Nivel de conocimiento deseado' }
+                - { property: 'actions', label: 'Acciones' }
+        Action:
+            label: "Acciones"
+            class: AppBundle\Entity\Action
+            form:
+                fields:
+                - { property: 'name', label: 'Nombre' }
+                - { property: 'description', label: 'Descripción' }
+                - { property: 'type', label: 'Tipo de acción' }
+                - { property: 'company', label: 'Empresa' }
+                # - { property: 'knowledges', label: 'Conocimientos' }
+        Product:
+            label: "Productos y Servicios"
+            class: AppBundle\Entity\Product
+            controller: AppBundle\Controller\ProductController
+            list:
+                title: "Productos y Servicios"
+                actions:
+                    - { name: 'new', label: 'Añadir producto o servicio'}
+            new:
+                title: "Crear producto o servicio"
+            edit:
+                title: "Editar producto o servicio con id: #%%entity_id%%"
+            form:
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'description', label: 'Descripción' }
+                    - { property: 'refCode', label: 'Código' }
+                    - { property: 'type', label: 'Tipo de producto' }
+                    - { property: 'company', label: 'Empresa', type_options: { required: true } }
+                    - { property: 'knowledges', label: 'Conocimientos' }
+
+
+
+
+
+

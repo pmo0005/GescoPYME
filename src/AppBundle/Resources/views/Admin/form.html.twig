@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/default/form.html.twig' %}
+
+asdfasd
+
+{% block body_javascript %}
+    <script>
+        alert("funciono");
+    </script>
+    {{ parent() }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $('#knowledge_company').change(function () {
+            var companySelector = $(this);
+
+            // Request the products of the selected city.
+            $.ajax({
+                url: "{{ path('get-prodcuts-from-company') }}",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    company_id: companySelector.val()
+                },
+                success: function (products) {
+                    var productSelect = $("#knowledge_products");
+
+                    // Remove current options
+                    productSelect.html('');
+
+                    // Empty value ...
+                    productSelect.append('<option value> Select a product of ' + companySelector.find("option:selected").text() + ' ...</option>');
+
+
+                    $.each(products, function (key, product) {
+                        productSelect.append('<option value="' + product.id + '">' + product.name + '</option>');
+                    });
+                },
+                error: function (err) {
+                    alert("An error ocurred while loading data ...");
+                }
+            });
+        });
+    </script>
+{% endblock body_javascript %}
