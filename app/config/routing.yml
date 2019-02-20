@@ -26,17 +26,17 @@ landing_locale:
     defaults:
         route: easyadmin
 
-easy_admin_bundle_superadmin:
-    resource: "@EasyAdminBundle/Controller/AdminController.php"
-    type:     annotation
-    prefix:   /{_locale}/admin
-    requirements:
-        _locale: en|es
-
 easy_admin_bundle_company:
     resource: "@EasyAdminBundle/Controller/AdminController.php"
     type:     annotation
     prefix:   /{_locale}/company/admin
+    requirements:
+        _locale: en|es
+
+easy_admin_bundle_superadmin:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /{_locale}/admin
     requirements:
         _locale: en|es
 
