@@ -33,12 +33,12 @@ easy_admin_bundle_superadmin:
     requirements:
         _locale: en|es
 
-easy_admin_bundle_company:
-    resource: "@EasyAdminBundle/Controller/AdminController.php"
-    type:     annotation
-    prefix:   /{_locale}/company/admin
-    requirements:
-        _locale: en|es
+#easy_admin_bundle_company:
+#    resource: "@EasyAdminBundle/Controller/AdminController.php"
+#    type:     annotation
+#    prefix:   /{_locale}/company/admin
+#    requirements:
+#        _locale: en|es
 
 landing:
     path: /

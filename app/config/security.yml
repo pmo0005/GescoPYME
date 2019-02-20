@@ -74,8 +74,8 @@ security:
         - { path: ^/ping,                 role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/doc,                  role: IS_AUTHENTICATED_ANONYMOUSLY }
 
-        - { path: ^/(en|es)/admin,        role: ROLE_SUPER_ADMIN }
-        - { path: ^/(en|es)/company/admin,role: ROLE_COMPANY }
+        - { path: ^/(en|es)/admin,        role: ROLE_COMPANY }
+        # - { path: ^/(en|es)/company/admin,role: ROLE_COMPANY }
 
         - { path: ^/(en|es)/login,        role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(en|es)/register,     role: IS_AUTHENTICATED_ANONYMOUSLY }

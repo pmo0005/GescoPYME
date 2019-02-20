@@ -149,12 +149,12 @@ easy_admin:
             #new: AppBundle\Resources\views\superadmin/knowledge/form.html.twig
             #new: '@AppBundle\superadmin\knowledge\form.html.twig'
         menu:
-            - { label: 'General' }
+            # - { label: 'General' }
             - ProductType
             - KnowledgeType
             - ActionType
             - KnowledgeGeneralLevel
-            - { label: 'Cómo hacemos' }
+            # - { label: 'Cómo hacemos' }
             - User
             - Company
             - Product
@@ -214,15 +214,39 @@ easy_admin:
         KnowledgeType:
             label: "Tipos de conocimientos"
             class: AppBundle\Entity\KnowledgeType
+            permissions:
+                list:  ['ROLE_SUPER_ADMIN']
+                new:  ['ROLE_SUPER_ADMIN']
+                edit:  ['ROLE_SUPER_ADMIN']
+                delete:  ['ROLE_SUPER_ADMIN']
+                show: ['ROLE_SUPER_ADMIN']
         KnowledgeGeneralLevel:
             label: "Niveles de conocimiento"
             class: AppBundle\Entity\KnowledgeGeneralLevel
+            permissions:
+                list:  ['ROLE_SUPER_ADMIN']
+                new:  ['ROLE_SUPER_ADMIN']
+                edit:  ['ROLE_SUPER_ADMIN']
+                delete:  ['ROLE_SUPER_ADMIN']
+                show: ['ROLE_SUPER_ADMIN']
         ProductType:
             label: "Tipos de Productos"
             class: AppBundle\Entity\ProductType
+            permissions:
+                list:  ['ROLE_SUPER_ADMIN']
+                new:  ['ROLE_SUPER_ADMIN']
+                edit:  ['ROLE_SUPER_ADMIN']
+                delete:  ['ROLE_SUPER_ADMIN']
+                show: ['ROLE_SUPER_ADMIN']
         ActionType:
             label: "Tipos de Acciones"
             class: AppBundle\Entity\ActionType
+            permissions:
+                list:  ['ROLE_SUPER_ADMIN']
+                new:  ['ROLE_SUPER_ADMIN']
+                edit:  ['ROLE_SUPER_ADMIN']
+                delete:  ['ROLE_SUPER_ADMIN']
+                show: ['ROLE_SUPER_ADMIN']
         Knowledge:
             label: "Conocimiento"
             class: AppBundle\Entity\Knowledge
