@@ -164,17 +164,34 @@ easy_admin:
         User:
             label: "Usuarios"
             class: AppBundle\Entity\User
+            controller: AppBundle\Controller\UserController
+            show:
+                fields:
+                    - id
+                    - { property: 'firstname', label: 'Nombre' }
+                    - { property: 'lastname', label: 'Apellidos' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'enabled', label: 'Estado' }
+                    - { property: 'lastLogin', label: 'Último login' }
+                    - { property: 'company.name', label: 'Compañía' }
+                    - { property: 'roles', label: 'Roles' }
             list:
+                actions:
+                    - { name: 'new', label: 'Añadir usuario'}
+                    - { name: 'show', label: 'Ver' }
                 title: "Usuarios"
                 fields:
                     - id
-                    - { property: 'username', label: 'Nombre de usuario' }
+                    - { property: 'firstname', label: 'Nombre' }
+                    - { property: 'lastname', label: 'Apellidos' }
                     - { property: 'email', label: 'Email' }
                     - { property: 'enabled', label: 'Estado' }
                     - { property: 'lastLogin', label: 'Último login' }
                     - { property: 'company.name', label: 'Compañía' }
             edit:
                 fields:
+                    - { property: 'firstname', label: 'Nombre' }
+                    - { property: 'lastname', label: 'Apellidos' }
                     - { property: 'username', label: 'Nombre de usuario' }
                     - { property: 'email', label: 'Email' }
                     - { property: 'enabled', label: 'Habilitado' }
@@ -184,6 +201,8 @@ easy_admin:
                 form_options: { validation_groups: ['Profile'] }
             new:
                 fields:
+                    - { property: 'firstname', label: 'Nombre' }
+                    - { property: 'lastname', label: 'Apellidos' }
                     - { property: 'username', label: 'Nombre de usuario' }
                     - { property: 'email', label: 'Email' }
                     - { property: 'enabled', label: 'Habilitado' }
@@ -194,6 +213,17 @@ easy_admin:
         Company:
             label: "Empresas"
             class: AppBundle\Entity\Company
+            list:
+                actions: ['edit', 'delete', 'show']
+                fields:
+                    - { property: 'id', label: 'id' }
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'socialDenomination', label: 'Denominación social' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'phone', label: 'Teléfono' }
+                    - { property: 'web', label: 'Página web' }
+                    - { property: 'cif', label: 'CIF' }
+                    - { property: 'cnae', label: 'CNAE' }
             form:
                 fields:
                     - { property: 'name', label: 'Nombre' }
@@ -206,7 +236,8 @@ easy_admin:
                     - { property: 'province', label: 'Provincia' }
                     - { property: 'city', label: 'Ciudad' }
                     - { property: 'country', label: 'País' }
-                    #- { property: 'contactPerson', label: 'Persona de contacto' }
+                    - { property: 'propietario', label: 'Propietario' }
+                    - { property: 'contactPerson', label: 'Persona de contacto' }
                     - { property: 'email', label: 'Email' }
                     - { property: 'phone', label: 'Teléfono' }
                     - { property: 'web', label: 'Página web' }
@@ -251,6 +282,10 @@ easy_admin:
             label: "Conocimiento"
             class: AppBundle\Entity\Knowledge
             controller: AppBundle\Controller\KnowledgeController
+            list:
+                actions:
+                    - { name: 'new', label: 'Añadir conocimiento'}
+                    - { name: 'show', label: 'Ver' }
             form:
                 fields:
                 - { property: 'name', label: 'Nombre' }
@@ -265,6 +300,10 @@ easy_admin:
         Action:
             label: "Acciones"
             class: AppBundle\Entity\Action
+            list:
+                actions:
+                    - { name: 'new', label: 'Añadir acción'}
+                    - { name: 'show', label: 'Ver' }
             form:
                 fields:
                 - { property: 'name', label: 'Nombre' }
@@ -280,6 +319,7 @@ easy_admin:
                 title: "Productos y Servicios"
                 actions:
                     - { name: 'new', label: 'Añadir producto o servicio'}
+                    - { name: 'show', label: 'Ver' }
             new:
                 title: "Crear producto o servicio"
             edit:
