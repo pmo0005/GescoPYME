@@ -98,7 +98,8 @@ class Product
      * @return string
      */
     public function __toString() {
-        return $this->name || "";
+        $name = $this->name;
+        return isset($name) ? $name : "";
     }
 
     /**
