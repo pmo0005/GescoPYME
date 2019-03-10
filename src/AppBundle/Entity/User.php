@@ -46,6 +46,19 @@ class User extends BaseUser
      */
     protected $email;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="firstname", type="string", length=255)
+     */
+    protected $firstname;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="lastname", type="string", length=255)
+     */
+    protected $lastname ;
 
     /**
      * @var Company The company of the user.
@@ -85,5 +98,37 @@ class User extends BaseUser
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param null|string $firstname
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param null|string $lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
     }
 }
