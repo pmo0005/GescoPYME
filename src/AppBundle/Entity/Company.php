@@ -111,6 +111,14 @@ class Company
      * @var User
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="propietario_id", referencedColumnName="id", nullable=true)
+     */
+    private $propietario;
+
+    /**
+     * @var User
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="contact_person_id", referencedColumnName="id", nullable=true)
      */
     private $contactPerson;
@@ -631,5 +639,29 @@ class Company
     public function setObservations($observations)
     {
         $this->observations = $observations;
+    }
+
+    /**
+     * Set propietario.
+     *
+     * @param User $propietario
+     *
+     * @return Empresa
+     */
+    public function setPropietario($propietario)
+    {
+        $this->propietario = $propietario;
+
+        return $this;
+    }
+
+    /**
+     * Get propietario.
+     *
+     * @return User
+     */
+    public function getPropietario()
+    {
+        return $this->propietario;
     }
 }
