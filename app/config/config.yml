@@ -213,6 +213,7 @@ easy_admin:
         Company:
             label: "Empresas"
             class: AppBundle\Entity\Company
+            controller: AppBundle\Controller\CompanyController
             list:
                 actions: ['edit', 'delete', 'show']
                 fields:
@@ -300,6 +301,7 @@ easy_admin:
         Action:
             label: "Acciones"
             class: AppBundle\Entity\Action
+            controller: AppBundle\Controller\ActionController
             list:
                 actions:
                     - { name: 'new', label: 'Añadir acción'}
