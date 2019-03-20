@@ -64,11 +64,10 @@
 
         function handleKnowledgeForm() {
             var actionSelector = $("#knowledge_actions");
-            actionSelector.select2(select2options);
+            actionSelector.select2({ theme: 'bootstrap', allowClear: true });
 
             $('#knowledge_company').change(function () {
                 var companySelector = $(this);
-                var actionSelector = $("#knowledge_actions");
 
                 actionSelector.empty().trigger("change");
                 actionSelector.select2(Object.assign({}, select2options, {
@@ -83,7 +82,6 @@
                         company_id: companySelector.val()
                     },
                     success: function (products) {
-                        var actionSelector = $("#knowledge_actions");
                         $.each(products, function (key, product) {
                             actionSelector.append('<option value="' + product.id + '">' + product.name + '</option>');
                         });
@@ -96,15 +94,14 @@
         }
 
         function handleProductForm() {
-            var actionSelector = $("#product_knowledges");
-            actionSelector.select2(select2options);
+            var knowledgeSelector = $("#product_knowledges");
+            knowledgeSelector.select2({ theme: 'bootstrap', allowClear: true });
 
             $('#product_company').change(function () {
                 var companySelector = $(this);
-                var actionSelector = $("#product_knowledges");
 
-                actionSelector.empty().trigger("change");
-                actionSelector.select2(Object.assign({}, select2options, {
+                knowledgeSelector.empty().trigger("change");
+                knowledgeSelector.select2(Object.assign({}, select2options, {
                     placeholder: "Selecciona conocimientos de " +  companySelector.find("option:selected").text()
                 }));
 
@@ -116,9 +113,8 @@
                         company_id: companySelector.val()
                     },
                     success: function (knowledges) {
-                        var actionSelector = $("#product_knowledges");
                         $.each(knowledges, function (key, knowledge) {
-                            actionSelector.append('<option value="' + knowledge.id + '">' + knowledge.name + '</option>');
+                            knowledgeSelector.append('<option value="' + knowledge.id + '">' + knowledge.name + '</option>');
                         });
                     },
                     error: function (err) {
