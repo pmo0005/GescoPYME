@@ -146,8 +146,6 @@ easy_admin:
         brand_color: '#827ffe'
         templates:
             new: '@AppBundle/Admin/form.html.twig'
-            #new: AppBundle\Resources\views\superadmin/knowledge/form.html.twig
-            #new: '@AppBundle\superadmin\knowledge\form.html.twig'
         menu:
             # - { label: 'General' }
             - ProductType
@@ -293,7 +291,6 @@ easy_admin:
                 - { property: 'description', label: 'Descripción' }
                 - { property: 'type', label: 'Tipo de conocimiento' }
                 - { property: 'company', label: 'Empresa' }
-                # - { property: 'products', label: 'Producto' }
                 - { property: 'totalUsers', label: 'Usuarios totales' }
                 - { property: 'currentLevel', label: 'Nivel de conocimiento actual' }
                 - { property: 'desiredLevel', label: 'Nivel de conocimiento deseado' }
@@ -312,7 +309,6 @@ easy_admin:
                 - { property: 'description', label: 'Descripción' }
                 - { property: 'type', label: 'Tipo de acción' }
                 - { property: 'company', label: 'Empresa' }
-                # - { property: 'knowledges', label: 'Conocimientos' }
         Product:
             label: "Productos y Servicios"
             class: AppBundle\Entity\Product
@@ -332,7 +328,7 @@ easy_admin:
                     - { property: 'description', label: 'Descripción' }
                     - { property: 'refCode', label: 'Código' }
                     - { property: 'type', label: 'Tipo de producto' }
-                    - { property: 'company', label: 'Empresa', type_options: { required: true } }
+                    - { property: 'company', label: 'Empresa' }
                     - { property: 'knowledges', label: 'Conocimientos' }
 
 
