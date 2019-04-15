@@ -163,6 +163,8 @@ easy_admin:
             label: "Usuarios"
             class: AppBundle\Entity\User
             controller: AppBundle\Controller\UserController
+            permissions:
+                new:  ['ROLE_SUPER_ADMIN']
             show:
                 fields:
                     - id
