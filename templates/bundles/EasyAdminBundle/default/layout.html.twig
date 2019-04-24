@@ -130,9 +130,11 @@
 
             <div class="content-wrapper">
             {% block content %}
+                <section id="flash-messages-container">
                 {% block flash_messages %}
                     {{ include(_entity_config is defined ? _entity_config.templates.flash_messages : '@EasyAdmin/default/flash_messages.html.twig') }}
                 {% endblock flash_messages %}
+                </section>
 
                 <section class="content-header">
                 {% block content_header %}
