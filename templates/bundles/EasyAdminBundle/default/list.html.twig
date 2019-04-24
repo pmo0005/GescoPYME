@@ -201,7 +201,23 @@
 
     <script type="text/javascript">
         $(function() {
+            function flashMessage (message, type) {
+                type = type || "warning";
+                $("#flash-messages-container").append("" +
+                    "<div id=\"flash-messages\" onclick='$(\"#flash-messages-container\").empty();'>" +
+                    "<div class=\"alert alert-"+type+"\">" +
+                        message +
+                    "</div>" +
+                    "</div>"
+                );
+            }
+
+            function removeFlasMessage () {
+                $("#flash-messages-container").empty();
+            }
+
             $('#main').find('table .toggle input[type="checkbox"]').change(function() {
+                removeFlasMessage();
                 var toggle = $(this);
                 var newValue = toggle.prop('checked');
                 var oldValue = !newValue;
@@ -218,10 +234,11 @@
 
                 toggleRequest.done(function(result) {});
 
-                toggleRequest.fail(function() {
+                toggleRequest.fail(function(data) {
                     // in case of error, restore the original value and disable the toggle
                     toggle.bootstrapToggle(oldValue == true ? 'on' : 'off');
-                    toggle.bootstrapToggle('disable');
+                    flashMessage(data.responseJSON.error);
+                    // toggle.bootstrapToggle('disable');
                 });
             });
 
