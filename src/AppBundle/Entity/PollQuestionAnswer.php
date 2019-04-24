@@ -24,7 +24,7 @@ class PollQuestionAnswer
     /**
      * @var PollQuestion|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollQuestion", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollQuestion", inversedBy="answers", cascade={"persist"})
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
@@ -43,6 +43,15 @@ class PollQuestionAnswer
      */
     private $value;
 
+    /**
+     * String representation.
+     *
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->text;
+    }
 
     /**
      * Get id.
