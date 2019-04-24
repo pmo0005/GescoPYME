@@ -64,10 +64,27 @@ class PollQuestion
     /**
      * @var ArrayCollection|null
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PollQuestionAnswer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PollQuestionAnswer", mappedBy="question", cascade={"persist"})
      */
     private $answers;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     */
+    private $enabled;
+
+    public function __construct()
+    {
+        $this->enabled = false;
+        $this->answers = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->text;
+    }
 
     /**
      * Get id.
@@ -232,6 +249,7 @@ class PollQuestion
      */
     public function addAnswer ($answer)
     {
+        $answer->setQuestion($this);
         $this->answers->add($answer);
 
         return $this;
@@ -247,6 +265,26 @@ class PollQuestion
     public function removeAnswer($answer)
     {
         $this->answers->removeElement($answer);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param $enabled
+     *
+     * @return PollQuestion
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }
