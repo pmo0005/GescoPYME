@@ -158,6 +158,9 @@ easy_admin:
             - Product
             - Knowledge
             - Action
+            - PollQuestionGeneral
+            - PollQuestionCompany
+            - PollQuestionProduct
     entities:
         User:
             label: "Usuarios"
@@ -332,9 +335,113 @@ easy_admin:
                     - { property: 'type', label: 'Tipo de producto' }
                     - { property: 'company', label: 'Empresa' }
                     - { property: 'knowledges', label: 'Conocimientos' }
-
-
-
-
-
-
+        PollQuestionGeneral:
+            type: 'TYPE_GENERAL'
+            label: "Preguntas Generales"
+            permissions:
+                list: ['ROLE_SUPER_ADMIN']
+                new: ['ROLE_SUPER_ADMIN']
+                edit: ['ROLE_SUPER_ADMIN']
+                delete: ['ROLE_SUPER_ADMIN']
+                show: ['ROLE_SUPER_ADMIN']
+            class: AppBundle\Entity\PollQuestion
+            controller: AppBundle\Controller\PollQuestionController
+            list:
+                title: "Preguntas Generales"
+                actions:
+                    - { name: 'new', label: 'Añadir pregunta' }
+                    - { name: 'show', label: 'Ver' }
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "enabled", label: 'Activar' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+            show:
+                title: "Preguntas General (#%%entity_id%%)"
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+            new:
+                title: "Crear nueva pregunta"
+                fields:
+                    - { property: "text", label: 'Pregunta' }
+            edit:
+                title: "Editar pregunta con id: #%%entity_id%%"
+                fields:
+                    - { property: "text", label: 'Pregunta' }
+        PollQuestionCompany:
+            type: 'TYPE_COMPANY'
+            label: "Preguntas de empresa"
+            permissions:
+                list: ['ROLE_COMPANY']
+                new: ['ROLE_COMPANY']
+                edit: ['ROLE_COMPANY']
+                delete: ['ROLE_COMPANY']
+                show: ['ROLE_COMPANY']
+            class: AppBundle\Entity\PollQuestion
+            controller: AppBundle\Controller\PollQuestionController
+            list:
+                title: "Preguntas de empresa"
+                actions:
+                    - { name: 'new', label: 'Añadir pregunta' }
+                    - { name: 'show', label: 'Ver' }
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "enabled", label: 'Activar' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+            show:
+                title: "Preguntas de empresa (#%%entity_id%%)"
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+            new:
+                title: "Crear nueva pregunta"
+                fields:
+                    - { property: "text", label: 'Pregunta' }
+            edit:
+                title: "Editar pregunta con id: #%%entity_id%%"
+                fields:
+                    - { property: "text", label: 'Pregunta' }
+        PollQuestionProduct:
+            type: 'TYPE_PRODUCT'
+            label: "Preguntas de producto"
+            permissions:
+                list: ['ROLE_COMPANY']
+                new: ['ROLE_COMPANY']
+                edit: ['ROLE_COMPANY']
+                delete: ['ROLE_COMPANY']
+                show: ['ROLE_COMPANY']
+            class: AppBundle\Entity\PollQuestion
+            controller: AppBundle\Controller\PollQuestionController
+            list:
+                title: "Preguntas de producto"
+                actions:
+                    - { name: 'new', label: 'Añadir pregunta' }
+                    - { name: 'show', label: 'Ver' }
+                    - { name: 'filterByProduct', label: 'Filtrar producto' }
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "product", label: 'Producto' }
+                    - { property: "enabled", label: 'Activar' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+                sort: ['id', 'DESC']
+            show:
+                title: "Preguntas de product (#%%entity_id%%)"
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: "product", label: 'Producto' }
+                    - { property: "text", label: 'Pregunta' }
+                    - { property: "answers", label: 'Respuestas' }
+            new:
+                title: "Crear nueva pregunta"
+                fields:
+                    - { property: "product", label: 'Producto or servicio', type_options: { required: true } }
+                    - { property: "text", label: 'Pregunta' }
+            edit:
+                title: "Editar pregunta con id: #%%entity_id%%"
+                fields:
+                    - { property: "text", label: 'Pregunta' }
