@@ -47,6 +47,10 @@ landing:
         route: easyadmin
         _locale: en
 
+poll:
+    path: /poll/product/{productId}
+    controller: AppBundle:Poll:index
+
 ajax_company_actions:
     path:     /{_locale}/get-company-actions
     defaults:
