@@ -50,17 +50,20 @@
     </head>
 
     {% block body %}
-    <body id="{% block body_id %}{% endblock %}" class="easyadmin sidebar-mini {% block body_class %}{% endblock %} {{ app.request.cookies.has('_easyadmin_navigation_iscollapsed') ? 'sidebar-collapse' }}">
+    {% set anon = app.user is null %}
+    <body id="{% block body_id %}{% endblock %}" class="easyadmin {{ not anon ? 'sidebar-mini' }} {% block body_class %}{% endblock %} {{ app.request.cookies.has('_easyadmin_navigation_iscollapsed') or anon ? 'sidebar-collapse' }}">
         <div class="wrapper">
         {% block wrapper %}
             <header class="main-header">
             {% block header %}
                 <nav class="navbar" role="navigation">
+                    {% if not anon %}
                     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                         <span class="sr-only">{{ 'toggle_navigation'|trans(domain = 'EasyAdminBundle') }}</span>
                     </a>
+                    {% endif %}
 
-                    <div id="header-logo">
+                    <div id="header-logo" {% if anon %}style="padding-left: 15px;"{% endif %}>
                         {% block header_logo %}
                             <a class="logo {{ easyadmin_config('site_name')|length > 14 ? 'logo-long' }}" title="{{ easyadmin_config('site_name')|striptags }}" href="{{ path('easyadmin') }}">
                                 {{ easyadmin_config('site_name')|raw }}
