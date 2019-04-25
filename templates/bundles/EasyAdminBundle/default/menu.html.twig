@@ -89,7 +89,12 @@
 
 <ul class="sidebar-menu">
     {% set _menu_items = easyadmin_config('design.menu') %}
-    {% set _roles = app.user.roles %}
+    {% if app.user %}
+        {% set _roles = app.user.roles %}
+    {% else %}
+        {% set _roles = [] %}
+    {% endif %}
+
 
     {% block main_menu %}
 
