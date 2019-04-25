@@ -23,10 +23,9 @@ class PollRegistry
     private $id;
 
     /**
-     * @var User|null
+     * @var string|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\Column(name="user", type="string", length=255, nullable=true)
      */
     private $user;
 
@@ -52,6 +51,13 @@ class PollRegistry
      */
     private $userAnswers;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="observations", type="text", nullable=true)
+     */
+    private $observations;
+
 
     /**
      * PollRegistry constructor.
@@ -74,7 +80,7 @@ class PollRegistry
     /**
      * Set user.
      *
-     * @param User|null $user
+     * @param string|null $user
      *
      * @return PollRegistry
      */
@@ -88,7 +94,7 @@ class PollRegistry
     /**
      * Get user.
      *
-     * @return User|null
+     * @return string|null
      */
     public function getUser()
     {
@@ -193,5 +199,21 @@ class PollRegistry
         $this->userAnswers->removeElement($userAnswer);
 
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getObservations()
+    {
+        return $this->observations;
+    }
+
+    /**
+     * @param null|string $observations
+     */
+    public function setObservations($observations)
+    {
+        $this->observations = $observations;
     }
 }
