@@ -141,7 +141,7 @@ lexik_jwt_authentication:
     token_ttl:        "%jwt_token_ttl%"
 
 easy_admin:
-    site_name: 'Gescopyme Admin Panel'
+    site_name: 'Gescopyme'
     design:
         brand_color: '#827ffe'
         templates:
