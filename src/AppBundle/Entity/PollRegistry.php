@@ -47,7 +47,7 @@ class PollRegistry
     /**
      * @var ArrayCollection|null
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PollUserAnswer", mappedBy="answer")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PollUserAnswer", mappedBy="registry", cascade={"persist"})
      */
     private $userAnswers;
 
@@ -66,6 +66,11 @@ class PollRegistry
     {
         $this->createdAt = new \DateTime();
         $this->userAnswers = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return "" . $this->id;
     }
 
     /**
