@@ -8,15 +8,14 @@ use AppBundle\Entity\PollQuestion;
 use AppBundle\Entity\PollQuestionAnswer;
 use AppBundle\Entity\PollQuestionType;
 use AppBundle\Entity\PollRegistry;
+use AppBundle\Entity\PollUserAnswer;
 use AppBundle\Entity\Product;
-use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\UserManager;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PollController extends Controller
@@ -27,9 +26,9 @@ class PollController extends Controller
     const TYPE_PRODUCT = "TYPE_PRODUCT";
     const MAX_ALLOWED_ACTIVE_QUESTIONS = 3;
 
-    public function indexAction($productId = null)
+    public function indexAction(Request $request, $productId = null)
     {
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
         $productRepo = $em->getRepository("AppBundle:Product");
 
         /** @var Product $product */
@@ -38,35 +37,44 @@ class PollController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $questions = $this->getPollQuestions($product);
-        /** @var PollQuestion $question */
-        $question = $questions[2];
+        $form = $this->createPollRegistryForm($product);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $reg = $this->handlePollResponses($form);
+            return $this->render("AppBundle::thanks.html.twig", [
+                'user' => $reg->getUser(),
+                'product' => $reg->getProduct()
+            ]);
+        } else {
+            return $this->render("AppBundle::poll.html.twig", [
+                'form' => $form->createView(),
+                'product' => $product,
+            ]);
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @return \Symfony\Component\Form\FormInterface
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function createPollRegistryForm(Product $product) {
         $reg = new PollRegistry();
-        $reg
-            ->setUser("test@guest.com")
-            ->setProduct($product);
+        $reg->setProduct($product);
 
-        $builder = $this->createFormBuilder($reg)
-            ->add('user', null, array("label" => "Email"))
-            ->add('observations', null, array("label" => "Observaciones"))
-            ->add('pregunta', ChoiceType::class, array(
-                'mapped' => false,
-                'required' => true,
-                'expanded' => false,
-                'label' => $question->getText(),
-                'choices' => $question->getAnswers(),
-                'choice_label' => function(PollQuestionAnswer $answer, $key, $value) {
-                    return strtoupper($answer->getText());
-                },
-                'choice_value' => function (PollQuestionAnswer $answer = null) {
-                    return $answer ? $answer->getId() : '';
-                },
+        $questions = $this->getPollQuestions($product);
+
+        $formBuilder = $this->createFormBuilder($reg)
+            ->add('user', null, array(
+                "required" => true,
+                "label" => "Email"
             ));
 
         /** @var PollQuestion $question */
         foreach ($questions as $question) {
-            $builder->add("question_".$question->getId(), ChoiceType::class, array(
+            $formBuilder->add("question_".$question->getId(), ChoiceType::class, array(
                 'mapped' => false,
                 'required' => true,
                 'expanded' => false,
@@ -81,20 +89,56 @@ class PollController extends Controller
             ));
         }
 
-        $form = $builder->getForm();
+        $formBuilder
+            ->add('observations', null, array(
+                "required" => true,
+                "label" => "Observaciones"
+            ))
+            ->add('save', SubmitType::class, array(
+                'label' => 'Enviar',
+                'attr' => array('class' => 'btn btn-primary action-save'),
+            ));
 
-        return $this->render("AppBundle::poll.html.twig", [
-            'form' => $form->createView(),
-            'product' => $product,
-        ]);
+        return $formBuilder->getForm();
+    }
 
-        /*
-        return new JsonResponse(array(
-            "product_id" => $product->getName(),
-            "company" => $product->getCompany()->getName(),
-            "questions" => array_map(function ($q) { return $q->getId(); }, $questions)
-        ));
-        */
+    /**
+     * @param Form $form
+     * @return PollRegistry
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function handlePollResponses(Form $form) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var PollRegistry $reg */
+        $reg = $form->getData();
+
+        $answers = array();
+        foreach ($this->getPollQuestions($reg->getProduct()) as $question) {
+            /** @var PollQuestionAnswer $answer */
+            $answer = $form->get("question_".$question->getId())->getData();
+            if (isset($answer)) {
+                $answers[] = array(
+                    "text" => $answer->getText(),
+                    "value" => $answer->getValue()
+                );
+
+                $userAnswer = new PollUserAnswer();
+                $userAnswer
+                    ->setAnswer($answer)
+                    ->setRegistry($reg)
+                    ->setText($answer->getText())
+                    ->setValue($answer->getValue());
+                $em->persist($userAnswer);
+
+                $reg->addUserAnswer($userAnswer);
+            }
+        }
+
+        $em->persist($reg);
+        $em->flush();
+
+        return $reg;
     }
 
     /**
@@ -144,7 +188,7 @@ class PollController extends Controller
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     private function getOrCreateQuestionType($type) {
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
         $type = $em
             ->getRepository("AppBundle:PollQuestionType")
             ->findOneBy(array("name" => $type));
