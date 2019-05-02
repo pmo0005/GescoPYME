@@ -40,6 +40,13 @@ class PollUserAnswer
     /**
      * @var string|null
      *
+     * @ORM\Column(name="text", type="text", nullable=true)
+     */
+    private $text;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="value", type="text", nullable=true)
      */
     private $value;
@@ -47,10 +54,14 @@ class PollUserAnswer
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="createdAt", type="datetime_immutable", nullable=true)
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -108,6 +119,30 @@ class PollUserAnswer
     public function getAnswer()
     {
         return $this->answer;
+    }
+
+    /**
+     * Set text.
+     *
+     * @param string|null $text
+     *
+     * @return PollUserAnswer
+     */
+    public function setText($text = null)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get text.
+     *
+     * @return string|null
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
