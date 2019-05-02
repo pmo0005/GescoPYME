@@ -1,5 +1,5 @@
 login:
-  name: Gescopyme Login
+  name: Gescopyme
   form:
     username_required: El usuario es obligatorio
     password_required: La contraseña es obligatoria
