@@ -21,6 +21,7 @@ class AdminLoginController extends Controller
         $lastUsername = $session->get(Security::LAST_USERNAME);
 
         return $this->render('@App/AdminLogin/index.html.twig', array(
+            "companies" => $this->getDoctrine()->getRepository("AppBundle:Company")->findAll(),
             "error" => $error,
             "last_username" => $lastUsername,
         ));
