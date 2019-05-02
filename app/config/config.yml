@@ -451,9 +451,7 @@ easy_admin:
             permissions:
                 list: ['ROLE_COMPANY']
                 show: ['ROLE_COMPANY']
-                new: ['ROLE_SUPER_ADMIN']
-                edit: ['ROLE_SUPER_ADMIN']
-                delete: ['ROLE_SUPER_ADMIN']
+            disabled_actions: ['new', 'edit', 'delete']
             class: AppBundle\Entity\PollRegistry
             controller: AppBundle\Controller\PollRegistryController
             list:
