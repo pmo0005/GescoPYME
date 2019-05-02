@@ -1,0 +1,35 @@
+{% set _entity_config = easyadmin_entity("User") %}
+{% trans_default_domain _entity_config.translation_domain %}
+{% set _trans_parameters = { '%entity_name%': _entity_config.name|trans, '%entity_label%': _entity_config.label|trans } %}
+
+{% extends _entity_config.templates.layout %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body_id 'easyadmin-new-' ~ _entity_config.name %}
+{% block body_class 'new new-' ~ _entity_config.name|lower %}
+
+{% block header_logo %}
+    <a class="logo">Encuesta</a>
+{% endblock header_logo %}
+
+{% block user_menu %}
+    {{ product.name }} | {{ product.company.name }}
+{% endblock user_menu %}
+
+{% block content_title %}
+    {% spaceless %}
+        ¡Muchas Gracias {{ user }}!
+    {% endspaceless %}
+{% endblock %}
+
+{% block main %}
+    <p>Tus respuestas han sido guardadas y serán de gran ayuda para <b>{{ product.company.name }}</b>
+        a la hora de mejorar su producto/servicio: <b>{{ product.name }}</b>.</p>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+{% endblock %}
