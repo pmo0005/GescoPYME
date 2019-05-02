@@ -113,22 +113,18 @@ class PollController extends Controller
         /** @var PollRegistry $reg */
         $reg = $form->getData();
 
-        $answers = array();
+        /** @var PollQuestion $question */
         foreach ($this->getPollQuestions($reg->getProduct()) as $question) {
             /** @var PollQuestionAnswer $answer */
             $answer = $form->get("question_".$question->getId())->getData();
             if (isset($answer)) {
-                $answers[] = array(
-                    "text" => $answer->getText(),
-                    "value" => $answer->getValue()
-                );
-
                 $userAnswer = new PollUserAnswer();
                 $userAnswer
-                    ->setAnswer($answer)
                     ->setRegistry($reg)
-                    ->setText($answer->getText())
-                    ->setValue($answer->getValue());
+                    ->setAnswer($answer)
+                    ->setQuestionTextCopy($answer->getQuestion()->getText())
+                    ->setAnswerTextCopy($answer->getText())
+                    ->setAnswerValueCopy($answer->getValue());
                 $em->persist($userAnswer);
 
                 $reg->addUserAnswer($userAnswer);
