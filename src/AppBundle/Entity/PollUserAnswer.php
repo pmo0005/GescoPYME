@@ -24,7 +24,7 @@ class PollUserAnswer
     /**
      * @var PollRegistry|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollRegistry", inversedBy="userAnswers")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollRegistry", inversedBy="userAnswers", cascade={"persist"})
      * @ORM\JoinColumn(name="registry_id", referencedColumnName="id")
      */
     private $registry;
@@ -32,7 +32,7 @@ class PollUserAnswer
     /**
      * @var PollQuestionAnswer|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollQuestionAnswer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PollQuestionAnswer", cascade={"persist"})
      * @ORM\JoinColumn(name="poll_questions_answer_id", referencedColumnName="id", nullable=true)
      */
     private $answer;
@@ -40,16 +40,23 @@ class PollUserAnswer
     /**
      * @var string|null
      *
-     * @ORM\Column(name="text", type="text", nullable=true)
+     * @ORM\Column(name="questionTextCopy", type="text", nullable=true)
      */
-    private $text;
+    private $questionTextCopy;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="value", type="text", nullable=true)
+     * @ORM\Column(name="answerTextCopy", type="text", nullable=true)
      */
-    private $value;
+    private $answerTextCopy;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="answerValueCopy", type="text", nullable=true)
+     */
+    private $answerValueCopy;
 
     /**
      * @var \DateTime|null
@@ -61,6 +68,15 @@ class PollUserAnswer
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        $question = isset($this->questionTextCopy) ? $this->questionTextCopy : $this->answer->getQuestion()->getText();
+        $answer = isset($this->answerTextCopy) ? $this->answerTextCopy : $this->answer->getText();
+        $value = isset($this->answerValueCopy) ? $this->answerValueCopy : $this->answer->getValue();
+
+        return $question . ": " . $answer . " (" . $value .  ")";
     }
 
     /**
@@ -122,15 +138,35 @@ class PollUserAnswer
     }
 
     /**
-     * Set text.
-     *
-     * @param string|null $text
+     * @param null|string $questionTextCopy
      *
      * @return PollUserAnswer
      */
-    public function setText($text = null)
+    public function setQuestionTextCopy($questionTextCopy)
     {
-        $this->text = $text;
+        $this->questionTextCopy = $questionTextCopy;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getQuestionTextCopy()
+    {
+        return $this->questionTextCopy;
+    }
+
+    /**
+     * Set text.
+     *
+     * @param string|null $answerTextCopy
+     *
+     * @return PollUserAnswer
+     */
+    public function setAnswerTextCopy($answerTextCopy = null)
+    {
+        $this->answerTextCopy = $answerTextCopy;
 
         return $this;
     }
@@ -140,21 +176,21 @@ class PollUserAnswer
      *
      * @return string|null
      */
-    public function getText()
+    public function getAnswerTextCopy()
     {
-        return $this->text;
+        return $this->answerTextCopy;
     }
 
     /**
      * Set value.
      *
-     * @param string|null $value
+     * @param string|null $answerValueCopy
      *
      * @return PollUserAnswer
      */
-    public function setValue($value = null)
+    public function setAnswerValueCopy($answerValueCopy = null)
     {
-        $this->value = $value;
+        $this->answerValueCopy = $answerValueCopy;
 
         return $this;
     }
@@ -164,9 +200,9 @@ class PollUserAnswer
      *
      * @return string|null
      */
-    public function getValue()
+    public function getAnswerValueCopy()
     {
-        return $this->value;
+        return $this->answerValueCopy;
     }
 
     /**
