@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Company;
 use AppBundle\Entity\PollRegistry;
+use AppBundle\Entity\PollUserAnswer;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
@@ -58,7 +59,7 @@ class PollRegistryController extends BaseAdminController
         if (isset($productId)) {
             $dqlFilter = $dqlFilter . " AND entity.product = " . $productId;
         }
-        $this->entity['list']['dql_filter'] = $dqlFilter;
+        $this->entity['search']['dql_filter'] = $dqlFilter;
 
         return parent::searchAction();
     }
@@ -105,6 +106,7 @@ class PollRegistryController extends BaseAdminController
             ->find($regId);
 
         if (isset($reg)) {
+            /** @var Company $regCompany */
             $regCompany = $reg->getProduct()->getCompany();
             if (isset($regCompany)) {
                 if ($regCompany->getId() === $userCompanyId) {
