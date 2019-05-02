@@ -40,7 +40,7 @@ class PollRegistry
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="createdAt", type="datetime_immutable", nullable=true)
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -64,6 +64,7 @@ class PollRegistry
      */
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->userAnswers = new ArrayCollection();
     }
 
@@ -176,7 +177,7 @@ class PollRegistry
     /**
      * Add UserAnswer
      *
-     * @param PollQuestionAnswer $userAnswer
+     * @param PollUserAnswer $userAnswer
      *
      * @return PollRegistry
      */
