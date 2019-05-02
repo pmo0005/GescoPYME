@@ -161,6 +161,7 @@ easy_admin:
             - PollQuestionGeneral
             - PollQuestionCompany
             - PollQuestionProduct
+            - PollRegistry
     entities:
         User:
             label: "Usuarios"
@@ -445,3 +446,21 @@ easy_admin:
                 title: "Editar pregunta con id: #%%entity_id%%"
                 fields:
                     - { property: "text", label: 'Pregunta' }
+        PollRegistry:
+            label: "Encuestas"
+            permissions:
+                list: ['ROLE_COMPANY']
+                show: ['ROLE_COMPANY']
+                new: ['ROLE_SUPER_ADMIN']
+                edit: ['ROLE_SUPER_ADMIN']
+                delete: ['ROLE_SUPER_ADMIN']
+            class: AppBundle\Entity\PollRegistry
+            controller: AppBundle\Controller\PollRegistryController
+            list:
+                title: "Encuestas"
+                actions:
+                    - { name: 'show', label: 'Ver' }
+                    - { name: 'filterByProduct', label: 'Filtrar producto' }
+                sort: ['id', 'DESC']
+            show:
+                title: "Encuesta: (#%%entity_id%%)"
