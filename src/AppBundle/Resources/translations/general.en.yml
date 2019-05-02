@@ -13,4 +13,5 @@ login:
       l: Access error, User blocked.
       e: This user account has expired.
       bc: Incorrect email and/or password
-
+  poll: Go to polls
+  poll_choose: Choose a product

@@ -13,4 +13,5 @@ login:
       l: Error de acceso, usuario bloqueado.
       e: La cuenta ha epirado.
       bc: Usuario y/o contraseña incorrecta.
-
+  poll: Acceder a encuestas
+  poll_choose: Elige un producto
