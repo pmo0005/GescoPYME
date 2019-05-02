@@ -24,8 +24,42 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('vendor/daterangepicker/daterangepicker.css') }}">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/util.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}"">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
     <!--===============================================================================================-->
+
+    <style>
+        #poll-button {}
+        #poll-selector-container {
+            display: none;
+        }
+        .select2-container .select2-selection--single,
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            height: 62px;
+            background-color: #673AB7;
+            border-radius: 3px;
+            border: none;
+            font-family: Ubuntu-Bold;
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.2;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100%;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: white transparent transparent transparent;
+        }
+        .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+            border-color: transparent transparent white transparent;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 62px;
+        }
+    </style>
 </head>
 <body>
 
@@ -79,6 +113,24 @@
                 </div>
 
             </form>
+
+            <div class="p-t-20">
+                <button type="submit" id="poll-button" style="background-color: #673AB7;" class="login100-form-btn">
+                    {{ ('login.poll' | trans({}, 'general')) }}
+                </button>
+                <div id="poll-selector-container">
+                    <select id="select-poll-company-product" style="width: 100%; height: 62px;">
+                        {% for company in companies %}
+                            <option value="">{{ ('login.poll_choose' | trans({}, 'general')) }}</option>
+                            <optgroup label="{{ company.name }}">
+                                {% for product in company.products %}
+                                    <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -129,6 +181,24 @@
         showValidate("username-container", message);
         showValidate("password-container", message);
         {% endif %}
+
+
+        var $pollButton = $("#poll-button");
+        var $pollSelectorContainer =  $("#poll-selector-container");
+        var $pollSelector = $('#select-poll-company-product');
+        var pollUrl = "{{ path('poll', { productId: "place_id_here" } ) }}";
+
+        $pollSelector.select2();
+        $pollSelector.on('select2:select', function (e) {
+            var data = e.params.data;
+            var href = pollUrl.replace("place_id_here", data.id);
+            window.location.href = href;
+        });
+
+        $pollButton.click(function() {
+            $pollButton.hide();
+            $pollSelectorContainer.fadeIn();
+        });
     })($);
 </script>
 
