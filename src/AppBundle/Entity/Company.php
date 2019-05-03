@@ -262,30 +262,6 @@ class Company
     }
 
     /**
-     * Set nif.
-     *
-     * @param string|null $nif
-     *
-     * @return Company
-     */
-    public function setNif($nif = null)
-    {
-        $this->nif = $nif;
-
-        return $this;
-    }
-
-    /**
-     * Get nif.
-     *
-     * @return string|null
-     */
-    public function getNif()
-    {
-        return $this->nif;
-    }
-
-    /**
      * Set cnae.
      *
      * @param string|null $cnae
