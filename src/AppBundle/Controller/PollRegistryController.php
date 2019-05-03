@@ -4,9 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Company;
 use AppBundle\Entity\PollRegistry;
-use AppBundle\Entity\PollUserAnswer;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
+use AppBundle\Service\CsvExporterService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -75,6 +75,40 @@ class PollRegistryController extends BaseAdminController
         }
 
         return parent::showAction();
+    }
+
+    public function exportAction()
+    {
+        /** @var User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userCompany = $user->getCompany();
+
+        $csvExporterService = new CsvExporterService();
+        $sortDirection = $this->request->query->get('sortDirection');
+        if (empty($sortDirection) || !in_array(strtoupper($sortDirection), ['ASC', 'DESC'])) {
+            $sortDirection = 'DESC';
+        }
+        $dqlFilter = "entity.product IN " . $this->dqlCompanyProductsList($userCompany);
+        if (isset($productId)) {
+            $dqlFilter = $dqlFilter . " AND entity.product = " . $productId;
+        }
+
+        $queryBuilder = $this->createListQueryBuilder(
+            $this->entity['class'],
+            $sortDirection,
+            $this->request->query->get('sortField'),
+            $dqlFilter
+        );
+
+        return $csvExporterService->getResponseFromQueryBuilder(
+            $queryBuilder,
+            $this->entity['export']['fields'],
+            sprintf(
+                'export_%s_%s.csv',
+                str_replace(' ', '-', strtolower($this->entity['label'])),
+                date('d-m-Y')
+            )
+        );
     }
 
     protected function editAction()
