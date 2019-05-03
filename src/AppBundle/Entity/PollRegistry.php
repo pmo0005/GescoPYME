@@ -217,9 +217,41 @@ class PollRegistry
 
     /**
      * @param null|string $observations
+     *
+     * @return PollRegistry
      */
     public function setObservations($observations)
     {
         $this->observations = $observations;
+
+        return $this;
+    }
+
+    public function normalize ($column) {
+        switch ($column) {
+            case "id":
+            case "user":
+            case "observations":
+                $n = $this->{$column};
+                break;
+            case "product":
+                $n = isset($this->product) ? $this->product->getName() : null;
+                break;
+            case "createdAt":
+                $n = isset($this->createdAt) ? $this->createdAt->format("d/m/Y H:i:s") : "";
+                break;
+            case "userAnswers":
+                $answers = $this->userAnswers->map(function ($userAnswer) {
+                    return isset($userAnswer) ? $userAnswer->__toString() : "";
+                });
+
+                $n = implode("|", $answers->toArray());
+                return str_replace(',', '<>', $n);
+                break;
+            default:
+                $n = "";
+        }
+
+        return isset($n) ? $n : "";
     }
 }
